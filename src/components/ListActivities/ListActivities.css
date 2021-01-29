@@ -1,0 +1,4 @@
+.result-list {
+    overflow: scroll;
+    height: 60vh;
+}

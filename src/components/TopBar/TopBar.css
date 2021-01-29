@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.container-add-activity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2em;
+
+    flex-direction: row;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .container-add-activity {
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    .logo-responsive {
+        margin: 0 auto;
+    }
+}
