@@ -1,17 +1,16 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDJSUfZ0TqsUQpdYbhewC2G6N3qzZjoqAg",
-    authDomain: "save-list-eefab.firebaseapp.com",
-    databaseURL: "https://save-list-eefab.firebaseio.com",
-    projectId: "save-list-eefab",
-    storageBucket: "save-list-eefab.appspot.com",
-    messagingSenderId: "761471295329",
-    appId: "1:761471295329:web:9ca1bf986f82a099522f20",
-    measurementId: "G-XVPZT7PSXL"
+    apiKey: "AIzaSyBQ-Tgiv8wVQa1zaA0S6cfN6i4zNY3U5Z0",
+    authDomain: "resto-aperto-98ba2.firebaseapp.com",
+    databaseURL: "https://resto-aperto-98ba2-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "resto-aperto-98ba2",
+    storageBucket: "resto-aperto-98ba2.appspot.com",
+    messagingSenderId: "420808397981",
+    appId: "1:420808397981:web:e883d307fa66b087a77074",
+    measurementId: "G-L436BVLD0G"
 };
 
+firebase.initializeApp(firebaseConfig);
 
-export default !firebase.apps.length
-    ? firebase.initializeApp(firebaseConfig)
-    : firebase.app();
+export default firebase;

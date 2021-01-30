@@ -1,8 +1,8 @@
 import './AddActivity.css';
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {Link} from "react-router-dom";
 import AvailableTimes from 'react-available-times';
-
+import BusinessService from "../../firebase/business.service";
 
 function AddActivity() {
 
@@ -10,17 +10,11 @@ function AddActivity() {
         nameActivity: '',
         category: '',
         address: '',
-        openingTimes: {
-            monday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-            tuesday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-            wednesday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-            thursday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-            friday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-            saturday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-            sunday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'}
-        }
+        openingTimes: []
 
     })
+
+    const calendarRef = useRef();
 
     const [submitted, setSubmitted] = useState(false);
 
@@ -42,14 +36,7 @@ function AddActivity() {
 
     const handleAddressInputChange = (event) => {
         event.persist();
-        setValues((values) => ({
-            ...values,
-            address: event.target.value,
-        }));
-    }
-
-    const handleWeekDayCheckboxChange = (event) => {
-        event.persist();
+        calendarRef.current.selections = {};
         setValues((values) => ({
             ...values,
             address: event.target.value,
@@ -59,20 +46,16 @@ function AddActivity() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setSubmitted(true);
+
+        BusinessService.newBusiness(values);
+
         setValues({
             nameActivity: '',
             category: '',
             address: '',
-            openingTimes: {
-                monday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-                tuesday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-                wednesday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-                thursday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-                friday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-                saturday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'},
-                sunday: {isOpen: false, openingTime: '00:00', closingTime: '00:00'}
-            }
+            openingTimes: []
         })
+
     };
 
     return (
@@ -99,11 +82,13 @@ function AddActivity() {
                     </div>
                     <h3>Orari di apertura</h3>
                     <AvailableTimes
+                        ref={calendarRef}
                         weekStartsOn="monday"
                         onChange={(selections) => {
-                            selections.forEach(({start, end}) => {
-                                console.log('Start:', start, 'End:', end);
-                            })
+                            setValues((values) => ({
+                                ...values,
+                                openingTimes: selections
+                            }));
                         }}
                         height={600}
                         recurring={true}
@@ -113,7 +98,7 @@ function AddActivity() {
 
 
                     <div className='submit-button'>
-                        <input type="submit" value="Registra"/>
+                        <input type="submit" value="Registra" onClick={handleSubmit}/>
                     </div>
                 </form>
                 {submitted && <div className='success-message'>Attività aggiunta con successo! Vai sulla <Link to='/'>pagina
